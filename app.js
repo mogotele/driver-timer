@@ -35,6 +35,7 @@ elements.resumeButton.addEventListener("click", function() {
 });
 
 elements.endButton.addEventListener("click", function() {
+  　alert("終業ボタンが押されました");
   const shouldEnd = window.confirm(
     "現在の勤務を終業しますか？\n\n終業すると勤務カレンダーへ自動保存されます。"
   );
