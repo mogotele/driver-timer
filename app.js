@@ -2,7 +2,6 @@
 // Driver Timer Version 0.6
 // イベント登録・初期起動
 // ========================================
-alert("app.jsが読み込まれました");
 "use strict";
 
 elements.timerTabButton.addEventListener("click", function() {

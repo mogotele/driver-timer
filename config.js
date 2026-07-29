@@ -31,6 +31,14 @@ let state = {
 
 let editingEventId = null;
 let selectedHistoryRecordId = null;
+function startOfMonth(date) {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    1
+  );
+}
+
 let calendarCursor = startOfMonth(new Date());
 
 const elements = {

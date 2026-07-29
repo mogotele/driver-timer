@@ -21,14 +21,7 @@ function getPrimaryRecord(records) {
     return secondTotals.restraintMs - firstTotals.restraintMs;
   })[0];
 }
-
-function startOfMonth(date) {
-  return new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    1
-  );
-}
+  
 function renderCalendar() {
   elements.calendarMonthTitle.textContent = formatMonthTitle(calendarCursor);
   elements.calendarGrid.innerHTML = "";
