@@ -1,0 +1,184 @@
+  <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b10">
+  <title>Driver Timer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">PERSONAL TIME MANAGEMENT</p>
+        <h1>Driver Timer</h1>
+      </div>
+      <div class="clock-area">
+        <span>現在時刻</span>
+        <time id="currentClock">--:--:--</time>
+      </div>
+    </header>
+
+    <nav class="app-tabs" aria-label="画面切り替え">
+      <button id="timerTabButton" class="app-tab active" type="button" aria-controls="timerView" aria-selected="true">タイマー</button>
+      <button id="calendarTabButton" class="app-tab" type="button" aria-controls="calendarView" aria-selected="false">勤務カレンダー</button>
+    </nav>
+
+    <section id="timerView" class="app-view">
+      <section class="status-panel">
+        <div>
+          <span class="small-label">現在の状態</span>
+          <p id="statusText" class="status-text">未始業</p>
+        </div>
+        <span id="statusBadge" class="status-badge idle">待機中</span>
+      </section>
+
+      <section class="main-timer">
+        <span class="small-label">拘束時間</span>
+        <p id="restraintTime" class="main-time">00:00:00</p>
+        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        <p id="remainingText" class="remaining-text">13時間まで残り 13:00:00</p>
+      </section>
+
+      <section class="time-grid">
+        <article class="time-card"><span>総経過時間</span><strong id="elapsedTime">00:00:00</strong></article>
+        <article class="time-card"><span>活動時間</span><strong id="workTime">00:00:00</strong></article>
+        <article class="time-card"><span>休憩時間</span><strong id="breakTime">00:00:00</strong></article>
+        <article class="time-card"><span>有効な休息</span><strong id="validRestTime">00:00:00</strong></article>
+      </section>
+
+      <section id="restInfo" class="rest-info hidden">
+        <span class="small-label">現在の休息時間</span>
+        <p id="restCurrentTime" class="rest-current">00:00:00</p>
+        <p id="restMessage">3時間に達するまで拘束時間に含まれます。</p>
+      </section>
+
+      <section class="controls">
+        <button id="startButton" class="button primary" type="button">始業する</button>
+        <div id="workButtons" class="control-grid">
+          <button id="breakButton" class="button secondary" type="button" disabled>休憩する</button>
+          <button id="restButton" class="button secondary" type="button" disabled>休息する</button>
+        </div>
+        <button id="resumeButton" class="button primary hidden" type="button">業務を再開する</button>
+        <button id="endButton" class="button danger" type="button" disabled>終業する</button>
+      </section>
+
+      <section id="managerContactPanel" class="manager-contact-panel hidden" aria-live="polite">
+        <div class="manager-contact-icon">⚠</div>
+        <div class="manager-contact-content">
+          <h2 id="managerContactTitle">拘束時間が13時間を超えました</h2>
+          <p id="managerContactMessage">営業所長に連絡してください。</p>
+          <p id="managerContactTime" class="manager-contact-time hidden"></p>
+          <button id="managerContactButton" class="manager-contact-button" type="button">連絡済みにする</button>
+        </div>
+      </section>
+
+      <section class="timeline-section">
+        <div class="section-heading">
+          <h2>本日のタイムライン</h2>
+          <button id="resetButton" class="text-button" type="button">現在の記録をリセット</button>
+        </div>
+        <ol id="timeline" class="timeline">
+          <li class="empty-timeline">まだ記録はありません。</li>
+        </ol>
+      </section>
+    </section>
+
+    <section id="calendarView" class="app-view hidden">
+      <section class="calendar-section">
+        <div class="calendar-toolbar">
+          <button id="previousMonthButton" class="calendar-nav-button" type="button" aria-label="前の月">‹</button>
+          <div class="calendar-title-area">
+            <span class="small-label">勤務履歴</span>
+            <h2 id="calendarMonthTitle">----</h2>
+          </div>
+          <button id="nextMonthButton" class="calendar-nav-button" type="button" aria-label="次の月">›</button>
+        </div>
+
+        <button id="todayMonthButton" class="calendar-today-button" type="button">今月へ戻る</button>
+
+        <div class="calendar-legend">
+          <span><strong class="legend-mark safe">○</strong>13時間以下</span>
+          <span><strong class="legend-mark caution">△</strong>13時間超〜15時間以下</span>
+          <span><strong class="legend-mark danger">×</strong>15時間超</span>
+        </div>
+
+        <div class="calendar-weekdays" aria-hidden="true">
+          <span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span><span>日</span>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </section>
+
+      <section class="weekly-summary-section">
+        <div class="section-heading"><h2>週間チェック</h2></div>
+        <div id="weeklySummaryList" class="weekly-summary-list">
+          <p class="empty-timeline">勤務履歴はまだありません。</p>
+        </div>
+      </section>
+
+      <p class="notice">※日をまたぐ勤務は始業日の記録として保存されます。</p>
+    </section>
+
+    <p class="notice">※記録はこの端末のブラウザ内に自動保存されます。</p>
+  </main>
+
+  <div id="editModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <section class="modal-content" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+      <h2 id="editModalTitle">記録を修正</h2>
+      <p class="edit-event-name">種類：<strong id="editEventLabel">---</strong></p>
+      <label class="input-label" for="editDateTime">日付・時刻</label>
+      <input id="editDateTime" class="datetime-input" type="datetime-local" step="1">
+      <p id="editError" class="edit-error hidden"></p>
+      <div class="modal-buttons">
+        <button id="saveEditButton" class="button primary" type="button">変更を保存</button>
+        <button id="cancelEditButton" class="button secondary" type="button">キャンセル</button>
+        <button id="deleteEventButton" class="button danger-outline" type="button">この記録を削除</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="detailModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <section class="modal-content detail-modal-content" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+      <div class="detail-heading">
+        <div>
+          <span class="small-label">勤務詳細</span>
+          <h2 id="detailModalTitle">----</h2>
+        </div>
+        <button id="closeDetailButton" class="modal-close-button" type="button" aria-label="詳細を閉じる">×</button>
+      </div>
+
+      <div id="detailJudgment" class="detail-judgment safe">○</div>
+
+      <dl class="detail-list">
+        <div><dt>始業</dt><dd id="detailStart">--</dd></div>
+        <div><dt>終業</dt><dd id="detailEnd">--</dd></div>
+        <div><dt>総経過時間</dt><dd id="detailElapsed">--</dd></div>
+        <div><dt>拘束時間</dt><dd id="detailRestraint">--</dd></div>
+        <div><dt>活動時間</dt><dd id="detailWork">--</dd></div>
+        <div><dt>休憩時間</dt><dd id="detailBreak">--</dd></div>
+        <div><dt>有効な休息</dt><dd id="detailRest">--</dd></div>
+        <div><dt>営業所長への連絡</dt><dd id="detailContact">--</dd></div>
+      </dl>
+
+      <section class="detail-timeline-section">
+        <h3>タイムライン</h3>
+        <ol id="detailTimeline" class="timeline"></ol>
+      </section>
+
+      <button id="deleteHistoryButton" class="button danger-outline" type="button">この勤務履歴を削除</button>
+    </section>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/edit-modal.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
