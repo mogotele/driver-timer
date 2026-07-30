@@ -34,16 +34,34 @@ elements.resumeButton.addEventListener("click", function() {
   addEvent("resume", new Date());
 });
 
+//修正用テストコード
 elements.endButton.addEventListener("click", function() {
-  　alert("終業ボタンが押されました");
-  const shouldEnd = window.confirm(
-    "現在の勤務を終業しますか？\n\n終業すると勤務カレンダーへ自動保存されます。"
-  );
-
-  if (shouldEnd) {
-    addEvent("end", new Date());
+  alert("① 終業ボタンを認識");
+  
+  const shouldEnd = window.confirm("終業しますか？");
+  
+  alert("② 確認結果：" + shouldEnd);
+  
+  if (!shouldEnd) {
+    return;
   }
+  
+  alert("③ addEventを呼び出します");
+  
+  addEvent("end", new Date());
+  
+  alert("④ addEventが完了しました");
 });
+//elements.endButton.addEventListener("click", function() {
+  //　alert("終業ボタンが押されました");
+  //const shouldEnd = window.confirm(
+   // "現在の勤務を終業しますか？\n\n終業すると勤務カレンダーへ自動保存されます。"
+  //);
+
+ // if (shouldEnd) {
+  //  addEvent("end", new Date());
+ // }
+//});
 
 elements.managerContactButton.addEventListener("click", function() {
   const isContacted = isValidDate(state.managerContact.contactedAt);

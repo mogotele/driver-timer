@@ -26,28 +26,65 @@ function getCurrentMode() {
   return EVENT_DEFINITIONS[lastEvent.type].mode;
 }
 
+//function addEvent(type, date = new Date()) {
+//  if (!EVENT_DEFINITIONS[type]) {
+//    return;
+//  }
+
+//  state.events.push({
+//    id: createId(),
+//    type: type,
+//    time: new Date(date)
+//  });
+//修正用テストコード
 function addEvent(type, date = new Date()) {
+  alert("⑤ addEvent開始：" + type);
+  
   if (!EVENT_DEFINITIONS[type]) {
+    alert("⑥ typeが見つかりません：" + type);
     return;
   }
-
+  
   state.events.push({
     id: createId(),
     type: type,
     time: new Date(date)
   });
-
+  
+  alert("⑦ イベント追加成功");
+  
   sortEvents();
-
-  if (type === "end") {
-    archiveCurrentShift();
-  }
-
+  
+  alert("⑧ sortEvents成功");
+  
+  // いまは履歴保存処理を止める
+  // if (type === "end") {
+  //   archiveCurrentShift();
+  // }
+  
   saveState();
+  alert("⑨ saveState成功");
+  
   renderTimeline();
+  alert("⑩ renderTimeline成功");
+  
   renderCalendar();
+  alert("⑪ renderCalendar成功");
+  
   updateInterface();
+  alert("⑫ updateInterface成功");
 }
+//  sortEvents();
+
+//  if (type === "end") {
+//   archiveCurrentShift();
+ // }
+
+//  saveState();
+ // renderTimeline();
+//  renderCalendar();
+//  updateInterface();
+//}
 
 function calculateTotalsFromEvents(events, now = new Date()) {
   const totals = {

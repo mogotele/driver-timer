@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080b10">
   <title>Driver Timer</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="app">
@@ -61,7 +61,15 @@
           <button id="restButton" class="button secondary" type="button" disabled>休息する</button>
         </div>
         <button id="resumeButton" class="button primary hidden" type="button">業務を再開する</button>
-        <button id="endButton" class="button danger" type="button" disabled>終業する</button>
+       <button
+  id="endButton"
+  type="button"
+  onclick="alert('押せた')"
+  style="position:relative; z-index:9999;"
+>
+  終業する
+</button>
+       
       </section>
 
       <section id="managerContactPanel" class="manager-contact-panel hidden" aria-live="polite">
